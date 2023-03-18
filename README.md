@@ -1,2 +1,2 @@
-# Minecraft-s-Annoyance-fix-mod-Farn-Edition-
+# Annoyance Fix Farn Edition
 Annoyance fix but it don't edit base class
