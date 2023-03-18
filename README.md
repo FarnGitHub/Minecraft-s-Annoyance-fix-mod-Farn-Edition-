@@ -1,2 +1,12 @@
 # Annoyance Fix Farn Edition
-Annoyance fix but it don't edit base class
+ Basically Annoyance fix but it don't edit base class
+## information
+### Requirement
+Only Require Risugami Modloader
+### Compatibility 
+Doesn't edit anything but override
+- Farmlands
+- Fences
+- Stairs
+- Boats
+
