@@ -1,4 +1,4 @@
-# Annoyance Fix Farn Edition
+# Annoyance Fix Farn Edition (Beta 1.7.3)
  Basically Annoyance fix but it don't edit base class
 ## information
 ### Requirement / Dependencies
