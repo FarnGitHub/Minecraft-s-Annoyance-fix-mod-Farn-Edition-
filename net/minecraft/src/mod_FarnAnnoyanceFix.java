@@ -45,7 +45,9 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 
 	public boolean OnTickInGame(Minecraft game) {
 		if (Mouse.getEventButton() == 2 && Mouse.getEventButtonState()) {
-			inventoryUtils.setCurrentItem(game.thePlayer, game.objectMouseOver);
+			if(game.objectMouseOver != null) {
+				inventoryUtils.setCurrentItem(game.thePlayer, game.objectMouseOver);
+			}
 		}
 		
 		return true;
