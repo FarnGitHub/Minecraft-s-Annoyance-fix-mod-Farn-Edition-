@@ -1,3 +1,3 @@
 2.0
--Add more option to disable some feature
+-Add more option to allowed player to disable some feature
 -Add ability to change every item stack size 
