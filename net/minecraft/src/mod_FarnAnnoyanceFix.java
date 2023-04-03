@@ -1,22 +1,26 @@
 package net.minecraft.src;
 
 import java.lang.reflect.Field;
-
 import java.util.Map;
-
 import net.minecraft.client.Minecraft;
-
 import FarnUtil.boat.*;
-
 import org.lwjgl.input.Mouse;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class mod_FarnAnnoyanceFix extends BaseMod {
-	Minecraft mc;
+	Minecraft mc = ModLoader.getMinecraftInstance();
 	private EntityProxyAPI entityProxy = EntityProxyAPI.getInstance();
 	InventoryPlayerUtils inventoryUtils = new InventoryPlayerUtils();
+	Block[] pickAxeEffective = new Block[]{Block.stoneOvenActive, Block.stoneOvenIdle, Block.stairCompactCobblestone, Block.brick, Block.oreRedstone, Block.oreRedstoneGlowing, Block.doorSteel, Block.rail, Block.railDetector, Block.railPowered, Block.dispenser, Block.pressurePlateStone, Block.mobSpawner};
+	Block[] AxeEffective = new Block[]{Block.workbench, Block.stairCompactPlanks, Block.fence, Block.doorWood, Block.ladder, Block.signPost, Block.signWall, Block.pumpkin, Block.pumpkinLantern, Block.pressurePlatePlanks, Block.jukebox, Block.musicBlock};
+	private static File configFile;
 
 	public String Version() {
-		return "1.0";
+		return "2.0 Preview";
 	}
 
 	public mod_FarnAnnoyanceFix() {
@@ -37,10 +41,7 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 
 		Block.blocksList[60] = null;
 		Block tilledField = (new BlockFarmlandProxy(60)).setHardness(0.6F).setStepSound(Block.soundGravelFootstep).setBlockName("farmland");
-
-		this.addEffectiveTools(new Item[]{Item.pickaxeDiamond, Item.pickaxeGold, Item.pickaxeSteel, Item.pickaxeStone, Item.pickaxeWood}, new Block[]{Block.stoneOvenActive, Block.stoneOvenIdle, stairCompactCobblestone, Block.brick, Block.oreRedstone, Block.oreRedstoneGlowing, Block.doorSteel, Block.rail, Block.railDetector, Block.railPowered, Block.dispenser, Block.pressurePlateStone, Block.mobSpawner});
-		this.addEffectiveTools(new Item[]{Item.axeDiamond, Item.axeGold, Item.axeSteel, Item.axeStone, Item.axeWood}, new Block[]{Block.workbench, stairCompactPlanks, Block.fence, Block.doorWood, Block.ladder, Block.signPost, Block.signWall, Block.pumpkin, Block.pumpkinLantern, Block.pressurePlatePlanks, Block.jukebox, Block.musicBlock});
-		this.addEffectiveTools(new Item[]{Item.shovelDiamond, Item.shovelGold, Item.shovelSteel, Item.shovelStone, Item.shovelWood}, new Block[]{tilledField});
+		this.writeConfigTest();
 	}
 
 	public boolean OnTickInGame(Minecraft game) {
@@ -53,6 +54,82 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 		return true;
 	}
 
+	private void writeConfigTest() {
+		configFile = new File(this.mc.getMinecraftDir() + "/config/FarnAnnoyanceFixBlockEffectiveList.cfg");
+		if (!configFile.exists()) {
+			try {
+				BufferedWriter configWriter = new BufferedWriter(new FileWriter(configFile));
+				configWriter.write("#This is a configuration file for Farn's AnnoyanceFix mod");
+				configWriter.newLine();
+				configWriter.write("#That allowed you to add more effective block for each vanilla tool");
+				configWriter.newLine();
+				configWriter.write(" ");
+				configWriter.newLine();
+				configWriter.write("#Input are blockID (To add more block you need seperate with comma)");
+				configWriter.newLine();
+				configWriter.write("#If your input are ItemID Then the game will crash");
+				configWriter.newLine();
+				configWriter.write(" ");
+				configWriter.newLine();
+				configWriter.write("PickAxeEffectiveList=");
+				for(int i = 0; i < this.pickAxeEffective.length; i++) {
+					if(i > 0) configWriter.write(",");
+					int id = this.pickAxeEffective[i].blockID;
+					configWriter.write(String.valueOf(id));
+				}
+				configWriter.newLine();
+				configWriter.write("AxeEffectiveList=");
+				for(int i = 0; i < this.AxeEffective.length; i++) {
+					if(i > 0) configWriter.write(",");
+					int id = this.AxeEffective[i].blockID;
+					configWriter.write(String.valueOf(id));
+				}
+				configWriter.newLine();
+				configWriter.write("ShovelEffectiveList=" + Block.tilledField.blockID);
+				configWriter.close();
+			} catch (Exception e) {System.out.println("Failed To Write Config: " + e);}
+		}
+		parseConfigTest(configFile);
+	}
+
+	private void parseConfigTest(File var0) {
+		try {
+			BufferedReader var1 = new BufferedReader(new FileReader(var0));
+			while(true) {
+				String var2 = var1.readLine();
+				if(var2 == null) {
+					var1.close();
+					break;
+				}
+				String[] var3 = var2.split("=");
+				if(var3[0].equals("PickAxeEffectiveList")) {
+					this.addEffectiveToolsFromConfigFile(new Item[]{Item.pickaxeDiamond, Item.pickaxeGold, Item.pickaxeSteel, Item.pickaxeStone, Item.pickaxeWood}, var3[1]);							
+				}
+
+				if(var3[0].equals("ShovelEffectiveList")) {
+					this.addEffectiveToolsFromConfigFile(new Item[]{Item.shovelDiamond, Item.shovelGold, Item.shovelSteel, Item.shovelStone, Item.shovelWood}, var3[1]);							
+				}
+
+				if(var3[0].equals("AxeEffectiveList")) {
+					this.addEffectiveToolsFromConfigFile(new Item[]{Item.axeDiamond, Item.axeGold, Item.axeSteel, Item.axeStone, Item.axeWood}, var3[1]);							
+				}
+			}
+		} catch (Exception e) {System.out.println("Failed To Read Config: " + e);}
+	}
+
+	public void addEffectiveToolsFromConfigFile(Item[] effectiveTools, String lines) {
+		try {
+			if(lines.contains(",")) {
+				String[] effectivelist = lines.split(",");
+				for(int i = 0; i < effectivelist.length; i++)  {
+					this.addEffectiveTools(effectiveTools, new Block[]{Block.blocksList[Integer.parseInt(effectivelist[i])]});							
+				}
+			} else {
+				this.addEffectiveTools(effectiveTools, new Block[]{Block.blocksList[Integer.parseInt(lines)]});
+			}						
+		} catch (Exception e) {
+		}
+	}
 
 	public void addEffectiveTools(Item[] effectiveTools, Block[] vulnerableBlocks) {
 		try {
