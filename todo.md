@@ -1,3 +1,5 @@
-2.0
+2.5
 
-- Add more option to allowed player to disable some feature
+- Add option for 2.1 crafting recipe changed
+- Make BookShelf drop 3 books (Optional feature)
+- Make BookShelf drop 3 books (Optional feature)
