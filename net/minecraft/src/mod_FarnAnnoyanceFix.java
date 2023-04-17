@@ -12,7 +12,7 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 		return "2.0";
 	}
 
-	public mod_FarnAnnoyanceFix() {
+	public void ModsLoaded() {
 		ModLoader.SetInGameHook(this, true, false);
 
 		if(FarnAnnoyanceFixConfiguration.boatfix) {
@@ -41,7 +41,21 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 			Block tilledField = (new BlockFarmlandProxy(60)).setHardness(0.6F).setStepSound(Block.soundGravelFootstep).setBlockName("farmland");
 		}
 
-		FarnAnnoyanceFixConfiguration.instance.AddAllToolEffective();
+		FarnAnnoyanceFixConfiguration config = FarnAnnoyanceFixConfiguration.instance;
+		config.AddAllToolEffective();
+		config.removeRecipe(new ItemStack(Block.stairSingle, 3, 3), new Object[]{"###", '#', Block.cobblestone});
+		config.removeRecipe(new ItemStack(Block.stairSingle, 3, 0), new Object[]{"###", '#', Block.stone});
+		config.removeRecipe(new ItemStack(Block.stairSingle, 3, 1), new Object[]{"###", '#', Block.sandStone});
+		config.removeRecipe(new ItemStack(Block.stairSingle, 3, 2), new Object[]{"###", '#', Block.planks});
+		config.removeRecipe(new ItemStack(Block.stairCompactCobblestone, 4), new Object[]{"#  ", "## ", "###", '#', Block.cobblestone});
+		config.removeRecipe(new ItemStack(Block.stairCompactPlanks, 4), new Object[]{"#  ", "## ", "###", '#', Block.planks});
+		ModLoader.AddRecipe(new ItemStack(Block.stairSingle, 6, 3), new Object[]{"###", '#', Block.cobblestone});
+		ModLoader.AddRecipe(new ItemStack(Block.stairSingle, 6, 0), new Object[]{"###", '#', Block.stone});
+		ModLoader.AddRecipe(new ItemStack(Block.stairSingle, 6, 1), new Object[]{"###", '#', Block.sandStone});
+		ModLoader.AddRecipe(new ItemStack(Block.stairSingle, 6, 2), new Object[]{"###", '#', Block.planks});
+		ModLoader.AddRecipe(new ItemStack(Block.stairCompactPlanks, 8), new Object[]{"#  ", "## ", "###", '#', Block.planks});
+		ModLoader.AddRecipe(new ItemStack(Block.stairCompactCobblestone, 8), new Object[]{"#  ", "## ", "###", '#', Block.cobblestone});
+
 	}
 
 	public boolean OnTickInGame(Minecraft game) {

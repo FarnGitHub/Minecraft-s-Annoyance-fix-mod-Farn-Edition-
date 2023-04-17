@@ -5,11 +5,7 @@ import net.minecraft.src.*;
 import java.util.Random;
 
 public class BlockFarmlandProxy extends BlockFarmland {
-	protected BlockFarmlandProxy(int i1) {
-		super(i1);
-	}
-
-	public BlockFarmlandProxy(int i1, String none) {
+	public BlockFarmlandProxy(int i1) {
 		super(i1);
 	}
 

@@ -2,6 +2,11 @@ package FarnAnnoyanceFix;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.File;
@@ -157,6 +162,82 @@ public class FarnAnnoyanceFixConfiguration {
 
 		} catch (Exception e) {
 			System.out.println("(Farn Annoyance Fix) Failed To Add Tool Effective: " + e);
+		}
+	}
+
+	public void removeRecipe(ItemStack itemStack1, Object... object2) {
+		String string3 = "";
+		int i4 = 0;
+		int i5 = 0;
+		int i6 = 0;
+		if(object2[i4] instanceof String[]) {
+			String[] string11 = (String[])((String[])object2[i4++]);
+
+			for(int i8 = 0; i8 < string11.length; ++i8) {
+				String string9 = string11[i8];
+				++i6;
+				i5 = string9.length();
+				string3 = string3 + string9;
+			}
+		} else {
+			while(object2[i4] instanceof String) {
+				String string7 = (String)object2[i4++];
+				++i6;
+				i5 = string7.length();
+				string3 = string3 + string7;
+			}
+		}
+
+		HashMap hashMap12;
+		for(hashMap12 = new HashMap(); i4 < object2.length; i4 += 2) {
+			Character character13 = (Character)object2[i4];
+			ItemStack itemStack15 = null;
+			if(object2[i4 + 1] instanceof Item) {
+				itemStack15 = new ItemStack((Item)object2[i4 + 1]);
+			} else if(object2[i4 + 1] instanceof Block) {
+				itemStack15 = new ItemStack((Block)object2[i4 + 1], 1, -1);
+			} else if(object2[i4 + 1] instanceof ItemStack) {
+				itemStack15 = (ItemStack)object2[i4 + 1];
+			}
+
+			hashMap12.put(character13, itemStack15);
+		}
+
+		ItemStack[] itemStack14 = new ItemStack[i5 * i6];
+
+		for(int i16 = 0; i16 < i5 * i6; ++i16) {
+			char c10 = string3.charAt(i16);
+			if(hashMap12.containsKey(c10)) {
+				itemStack14[i16] = ((ItemStack)hashMap12.get(c10)).copy();
+			} else {
+				itemStack14[i16] = null;
+			}
+		}
+
+		try {
+			List recipeList = (List)ModLoader.getPrivateValue(CraftingManager.class, CraftingManager.getInstance(), 1);
+			InventoryCrafting grid = getInventoryCraftingFromShapedRecipe(i5, i6, itemStack14);		
+			for(int i2 = 0; i2 < recipeList.size(); ++i2) {
+				IRecipe iRecipe3 = (IRecipe)recipeList.get(i2);
+				if(iRecipe3.matches(grid)) {
+					recipeList.remove(i2);
+ 					break;
+				}
+			} 
+		} catch (Exception e) {}
+	}
+
+	public InventoryCrafting getInventoryCraftingFromShapedRecipe(int width, int height, ItemStack[] itemStack14) {
+		try {	
+			InventoryCrafting craftingGrid = new InventoryCrafting(null, width, height);
+			ModLoader.setPrivateValue(InventoryCrafting.class, craftingGrid, "a", (ItemStack[])itemStack14);
+			return craftingGrid;	
+		} catch (Exception e) {
+			try {
+				InventoryCrafting craftingGrid = new InventoryCrafting(null, width, height);
+				ModLoader.setPrivateValue(InventoryCrafting.class, craftingGrid, "stackList", (ItemStack[])itemStack14);
+				return craftingGrid;
+			} catch (Exception ea) {ea.printStackTrace(); return null;}	
 		}
 	}
 }
