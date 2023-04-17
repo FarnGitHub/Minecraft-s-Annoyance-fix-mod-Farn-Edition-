@@ -9,7 +9,7 @@ import org.lwjgl.input.Mouse;
 public class mod_FarnAnnoyanceFix extends BaseMod {
 
 	public String Version() {
-		return "2.0";
+		return "2.1";
 	}
 
 	public void ModsLoaded() {
