@@ -1,12 +1,10 @@
 package FarnAnnoyanceFix;
 
 import java.lang.reflect.Field;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.File;
@@ -26,9 +24,11 @@ public class FarnAnnoyanceFixConfiguration {
 	public static boolean stonestair = true;
 	public static boolean woodstair = true;
 	public static boolean farmland = true;
+	public static boolean doublestairsrecipe = true;
+	public static boolean doubleslabsrecipe = true;
 
 	public final void AddAllToolEffective() {
-		configFile = new File(ModLoader.getMinecraftInstance().getMinecraftDir() + "/config/FarnAnnoyanceFix.cfg");
+		configFile = new File(ModLoader.getMinecraftInstance().getMinecraftDir() + "/config/FarnAnnoyanceFixNew.cfg");
 		if (!configFile.exists()) {
 			try {
 				BufferedWriter configWriter = new BufferedWriter(new FileWriter(configFile));
@@ -62,6 +62,12 @@ public class FarnAnnoyanceFixConfiguration {
 				this.WriteLine(configWriter, " ");
 				this.WriteLine(configWriter, "#Remove farm trampling by walking");
 				this.WriteLine(configWriter, "NoTrampling=" + farmland);
+				this.WriteLine(configWriter, " ");
+				this.WriteLine(configWriter, "#Make vanilla slab crafting recipe give you 6 slabs instead of 3 slabs");
+				this.WriteLine(configWriter, "DoubleSlabsRecipe=" + doubleslabsrecipe);
+				this.WriteLine(configWriter, " ");
+				this.WriteLine(configWriter, "#Make vanilla stair crafting recipe give you 8 stairs instaed of 4 stairs");
+				this.WriteLine(configWriter, "DoubleStairsRecipe=" + doublestairsrecipe);
 				configWriter.close();
 			} catch (Exception e) {System.out.println("(Farn Annoyance Fix) Failed To Write Config File: " + e);}
 		}
@@ -127,6 +133,14 @@ public class FarnAnnoyanceFixConfiguration {
 
 				if(var3[0].equals("NoTrampling")) {
 					farmland = var3[1].equals("true");
+				}
+
+				if(var3[0].equals("DoubleSlabsRecipe")) {
+					doubleslabsrecipe = var3[1].equals("true");
+				}
+
+				if(var3[0].equals("DoubleStairsRecipe")) {
+					doublestairsrecipe = var3[1].equals("true");
 				}
 			}
 		} catch (Exception e) {System.out.println("(Farn Annoyance Fix) Failed To Read Config File: " + e);}
