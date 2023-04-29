@@ -7,9 +7,14 @@ import FarnAnnoyanceFix.*;
 import org.lwjgl.input.Mouse;
 
 public class mod_FarnAnnoyanceFix extends BaseMod {
+	public static int stairRender;
 
 	public String Version() {
 		return "2.1.1";
+	}
+
+	public mod_FarnAnnoyanceFix() {
+		stairRender = ModLoader.getUniqueBlockModelID(this, true);
 	}
 
 	public void ModsLoaded() {
@@ -63,6 +68,16 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 			ModLoader.AddRecipe(new ItemStack(Block.stairCompactCobblestone, 8), new Object[]{"#  ", "## ", "###", '#', Block.cobblestone});
 		}
 
+	}
+
+	public void RenderInvBlock(RenderBlocks renderer, Block block, int metadata, int modelID) {
+		if(modelID == stairRender) {
+			AnnoyanceFixRender.instance.renderBlockStairInventory(renderer, block);
+		}
+	}
+
+	public boolean RenderWorldBlock(RenderBlocks renderer, IBlockAccess world, int x, int y, int z, Block block, int modelID) {
+		return modelID == stairRender ? AnnoyanceFixRender.instance.renderBlockStairsWithUpperVariant(renderer, block, x, y, z) : false;
 	}
 
 	public boolean OnTickInGame(Minecraft game) {

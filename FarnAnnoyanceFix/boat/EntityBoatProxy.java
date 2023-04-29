@@ -231,4 +231,19 @@ public class EntityBoatProxy extends EntityBoat {
 
 	protected void writeEntityToNBT(NBTTagCompound nBTTagCompound1) {
 	}
+
+	public boolean interact(EntityPlayer var1) {
+		if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != var1) {
+			return true;
+		} else {
+			if (!this.worldObj.multiplayerWorld) {
+				var1.mountEntity(this);
+			}
+			if(var1.ridingEntity == null) {
+				var1.setPosition(var1.posX, var1.posY+0.01f, var1.posZ);
+			}
+		}
+
+		return true;
+	}
 }
