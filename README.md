@@ -14,5 +14,5 @@ Only Require Risugami's Modloader
 - Vanilla's Stairs Crafting recipes now give 8 stairs instead of 4 stairs
 - Pickaxe's are now effective on more block such as cobble stone stair , redstone ore and furnace
 - Axes's are now effective on more block such as oak stair , crafting table and fence
-- Upper slab Placement
+- You can now place vanilla stairs upside down
 
