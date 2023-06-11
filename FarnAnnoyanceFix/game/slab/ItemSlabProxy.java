@@ -28,11 +28,11 @@ public class ItemSlabProxy extends ItemSlab {
 		} else {
 			int blockID = world.getBlockId(x, y, z);
 			int meta = world.getBlockMetadata(x, y, z);
-			int type = meta & 3;
-			boolean isUpper = (meta & 4) != 0;
+			boolean isUpper = (blockID == mod_FarnAnnoyanceFix.upperStair.blockID);
+			boolean isSingleSlab = (blockID == Block.stairSingle.blockID || isUpper);
 			
-			if(((face == 1 && !isUpper) || (face == 0 && isUpper)) && blockID == Block.stairSingle.blockID && meta == itemStack.getItemDamage()) {
-				if (world.checkIfAABBIsClear(Block.stairDouble.getCollisionBoundingBoxFromPool(world, x, y, z)) && world.setBlockAndMetadataWithNotify(x, y, z, Block.stairDouble.blockID, type)) {
+			if(((face == 1 && !isUpper) || (face == 0 && isUpper)) && isSingleSlab && meta == itemStack.getItemDamage()) {
+				if (world.checkIfAABBIsClear(Block.stairDouble.getCollisionBoundingBoxFromPool(world, x, y, z)) && world.setBlockAndMetadataWithNotify(x, y, z, Block.stairDouble.blockID, meta)) {
 					world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), Block.stairDouble.stepSound.func_1145_d(), (Block.stairDouble.stepSound.getVolume() + 1.0F) / 2.0F, Block.stairDouble.stepSound.getPitch() * 0.8F);
 					--itemStack.stackSize;
 				}
@@ -58,11 +58,12 @@ public class ItemSlabProxy extends ItemSlab {
 
 		int blockID = world.getBlockId(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		int type = meta & 3;
+		boolean isUpper = (blockID == mod_FarnAnnoyanceFix.upperStair.blockID);
+		boolean isSingleSlab = (blockID == Block.stairSingle.blockID || isUpper);
 
-		if (blockID == Block.stairSingle.blockID && type == itemStack.getItemDamage ()) {
+		if (isSingleSlab && meta == itemStack.getItemDamage ()) {
 			if (world.checkIfAABBIsClear(Block.stairDouble.getCollisionBoundingBoxFromPool(world, x, y, z)) &&
-				world.setBlockAndMetadataWithNotify(x, y, z, Block.stairDouble.blockID, type)
+				world.setBlockAndMetadataWithNotify(x, y, z, Block.stairDouble.blockID, meta)
 			) {
 				world.playSoundEffect(
 					(double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), 
