@@ -23,6 +23,15 @@ public class FarnAnnoyanceFixCore {
 	public static final FarnAnnoyanceFixCore instance = new FarnAnnoyanceFixCore();
 	private boolean isNormalEnvironment;
 
+	private FarnAnnoyanceFixCore() {
+		try {
+			this.isNormalEnvironment = Class.forName("uu") != null;
+		} catch (Exception exception2) {
+			this.isNormalEnvironment = false;
+		}
+
+	}
+
 	public final void setUpToolEffectiveList() {
 		configFile = new File(ModLoader.getMinecraftInstance().getMinecraftDir() + "/config/FarnAnnoyanceFixToolEffective.cfg");
 		if (!configFile.exists()) {
@@ -419,12 +428,43 @@ this.getInventorySlotContainItem(itemID, itemDamage, player);
 		return this.isNormalEnvironment; 	
 	}
 
-
-	{
+	public static void overrideVanillaBlock(Block block0, Block block1) {
 		try {
-			this.isNormalEnvironment = Class.forName("uu") != null;
-		} catch (Exception e) {
-			this.isNormalEnvironment = false;
+			for(int i2 = 0; i2 < Block.class.getDeclaredFields().length; ++i2) {
+				try {
+					if(((Block)Block.class.getDeclaredFields()[i2].get((Object)null)).equals(block0)) {
+						ModLoader.setPrivateValue(Block.class, (Object)null, i2, block1);
+						break;
+					}
+				} catch (Exception exception10) {
+				}
+			}
+
+			Item[] item12 = Item.itemsList;
+			int i3 = item12.length;
+
+			for(int i4 = 0; i4 < i3; ++i4) {
+				Item item5 = item12[i4];
+
+				try {
+					Field field6 = ItemTool.class.getDeclaredFields()[0];
+					field6.setAccessible(true);
+					Block[] block7 = (Block[])((Block[])field6.get(item5));
+
+					for(int i8 = 0; i8 < block7.length; ++i8) {
+						if(block7[i8].equals(block0)) {
+							block7[i8] = block1;
+							field6.set(item5, block7);
+							break;
+						}
+					}
+				} catch (Exception exception9) {
+				}
+			}
+
+			System.gc();
+		} catch (Exception exception11) {
+			throw new RuntimeException(exception11);
 		}
 	}
 

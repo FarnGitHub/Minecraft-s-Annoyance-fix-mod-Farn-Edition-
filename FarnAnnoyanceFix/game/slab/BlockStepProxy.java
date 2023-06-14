@@ -1,16 +1,19 @@
 package FarnAnnoyanceFix.game.slab;
 
-import java.util.ArrayList;
-import net.minecraft.src.*;
-
-import java.util.Random;
+import net.minecraft.src.Block;
+import net.minecraft.src.BlockStep;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ModLoader;
+import net.minecraft.src.MovingObjectPosition;
+import net.minecraft.src.World;
+import net.minecraft.src.mod_FarnAnnoyanceFix;
 
 public class BlockStepProxy extends BlockStep {
-	private int faceToSide[] = { 1, 0, 3, 2, 5, 4 };
-	private int offsetsXForSide[] = { 0, 0, 0, 0, -1, 1 };
-	private int offsetsYForSide[] = { -1, 1, 0, 0, 0, 0 };
-	private int offsetsZForSide[] = { 0, 0, -1, 1, 0, 0 };
-	protected boolean isDouble;	
+	private int[] faceToSide = new int[]{1, 0, 3, 2, 5, 4};
+	private int[] offsetsXForSide = new int[]{0, 0, 0, 0, -1, 1};
+	private int[] offsetsYForSide = new int[]{-1, 1, 0, 0, 0, 0};
+	private int[] offsetsZForSide = new int[]{0, 0, -1, 1, 0, 0};
+	protected boolean isDouble;
 
 	public BlockStepProxy(int i1, boolean z2) {
 		super(i1, z2);
@@ -18,58 +21,31 @@ public class BlockStepProxy extends BlockStep {
 	}
 
 	public void onBlockAdded(World world1, int i2, int i3, int i4) {
-		return;
 	}
 
-	public void onBlockPlaced(World world, int x, int y, int z, int side) {
+	public void onBlockPlaced(World world1, int i2, int i3, int i4, int i5) {
 		if(!this.isDouble) {
-			MovingObjectPosition mouse = ModLoader.getMinecraftInstance().objectMouseOver;
-			float yWithinSide = (float)mouse.hitVec.yCoord - (float)y;
-
-			if (side == 0 || side != 1 && yWithinSide > 0.5F) {
-				int metadata = world.getBlockMetadata(x, y, z);
-				world.setBlockAndMetadataWithNotify(x, y, z, mod_FarnAnnoyanceFix.upperStair.blockID, metadata);
+			MovingObjectPosition movingObjectPosition6 = ModLoader.getMinecraftInstance().objectMouseOver;
+			float f7 = (float)movingObjectPosition6.hitVec.yCoord - (float)i3;
+			if(i5 == 0 || i5 != 1 && f7 > 0.5F) {
+				int i8 = world1.getBlockMetadata(i2, i3, i4);
+				world1.setBlockAndMetadataWithNotify(i2, i3, i4, mod_FarnAnnoyanceFix.upperStair.blockID, i8);
 			}
 		}
- 	}
 
-	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int i2, int i3, int i4, int i5) {
- 		if(this != Block.stairSingle) {
-			return super.shouldSideBeRendered(blockAccess, i2, i3, i4, i5);
-		}
-		
-		if(i5 != 1 && i5 != 0 && !super.shouldSideBeRendered(blockAccess, i2, i3, i4, i5)) {
+	}
+
+	public boolean shouldSideBeRendered(IBlockAccess iBlockAccess1, int i2, int i3, int i4, int i5) {
+		if(this != Block.stairSingle && this != mod_FarnAnnoyanceFix.upperStair) {
+			return super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5);
+		} else if(i5 != 1 && i5 != 0 && !super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5)) {
 			return false;
-		}
-
-		int i = i2;
-		int j = i3;
-		int k = i4;
-		i += this.offsetsXForSide[this.faceToSide[i5]];
-		j += this.offsetsYForSide[this.faceToSide[i5]];
-		k += this.offsetsZForSide[this.faceToSide[i5]];
-		boolean flag = blockAccess.getBlockId(i, j, k) == mod_FarnAnnoyanceFix.upperStair.blockID;
-
-		if (!flag) {
-			if (i5 == 1) {
-				return true;
-			}
-
-			if (i5 == 0 && super.shouldSideBeRendered(blockAccess, i2, i3, i4, i5)) {
-				return true;
-			} else {
-				return blockAccess.getBlockId(i2, i3, i4) != this.blockID;
-			}
-		}
-
-		if (i5 == 0) {
-			return true;
-		}
-
-		if (i5 == 1 && super.shouldSideBeRendered(blockAccess, i2, i3, i4, i5)) {
-			return true;
 		} else {
-			return blockAccess.getBlockId(i2, i3, i4) != this.blockID;
+			int i6 = i2 + this.offsetsXForSide[this.faceToSide[i5]];
+			int i7 = i3 + this.offsetsYForSide[this.faceToSide[i5]];
+			int i8 = i4 + this.offsetsZForSide[this.faceToSide[i5]];
+			boolean z9 = iBlockAccess1.getBlockId(i6, i7, i8) == mod_FarnAnnoyanceFix.upperStair.blockID;
+			return !z9 ? (i5 == 1 ? true : (i5 == 0 && super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5) ? true : iBlockAccess1.getBlockId(i2, i3, i4) != this.blockID)) : (i5 == 0 ? true : (i5 == 1 && super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5) ? true : iBlockAccess1.getBlockId(i2, i3, i4) != this.blockID));
 		}
 	}
 }

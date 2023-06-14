@@ -31,35 +31,34 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 			FarnAnnoyanceFixCore.instance.overrideEntity("Boat", EntityBoat.class, 41, EntityBoatProxy.class);			
 			Item.itemsList[Item.boat.shiftedIndex] = null;
 			Item.itemsList[Item.boat.shiftedIndex] = (new ItemBoatProxy(Item.boat.shiftedIndex)).setIconCoord(8, 8).setItemName("boat");
-			System.out.println("overriden boat");
 		}
 
 		if(fencefix) {
 			Block.blocksList[Block.fence.blockID] = null;
-			Block fence = (new BlockFenceProxy(Block.fence.blockID, 4)).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setBlockName("fence").disableNeighborNotifyOnMetadataChange();
+			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.fence, (new BlockFenceProxy(Block.fence.blockID, 4)).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setBlockName("fence").disableNeighborNotifyOnMetadataChange());
 		}
 
 		if(woodstairdrop) {
 			Block.blocksList[Block.stairCompactPlanks.blockID] = null;
-			Block woodstair = (new BlockStairsProxy(Block.stairCompactPlanks.blockID, Block.planks)).setBlockName("stairsWood").disableNeighborNotifyOnMetadataChange();
+			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.stairCompactPlanks, (new BlockStairsProxy(Block.stairCompactPlanks.blockID, Block.planks)).setBlockName("stairsWood").disableNeighborNotifyOnMetadataChange());
 		}
 
 		if(stonestairdrop) {
 			Block.blocksList[Block.stairCompactCobblestone.blockID] = null;
-			Block cobblestair = (new BlockStairsProxy(Block.stairCompactCobblestone.blockID, Block.cobblestone)).setBlockName("stairsStone").disableNeighborNotifyOnMetadataChange();
+			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.stairCompactCobblestone, (new BlockStairsProxy(Block.stairCompactCobblestone.blockID, Block.cobblestone)).setBlockName("stairsStone").disableNeighborNotifyOnMetadataChange());
 		}
-		
+
 		if(nofarmlandtrampling) {
 			Block.blocksList[Block.tilledField.blockID] = null;
-			Block farmland = (new BlockFarmlandProxy(Block.tilledField.blockID)).setHardness(0.6F).setStepSound(Block.soundGravelFootstep).setBlockName("farmland");		
+			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.tilledField, (new BlockFarmlandProxy(Block.tilledField.blockID)).setHardness(0.6F).setStepSound(Block.soundGravelFootstep).setBlockName("farmland"));
 		}
 
 		if(slabplacement) {
 			Block.blocksList[Block.stairSingle.blockID] = null;
-			Block stairSingle = (new BlockStepProxy(Block.stairSingle.blockID, false)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab");
+			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.stairSingle, (new BlockStepProxy(Block.stairSingle.blockID, false)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab"));
 			Block.blocksList[Block.stairDouble.blockID] = null;
-			Block stairDouble = (new BlockStepProxy(Block.stairDouble.blockID, true)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab");
 			ModLoader.RegisterBlock(upperStair  = (new BlockStepUpper(upperslabid)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab"));
+			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.stairDouble, (new BlockStepProxy(Block.stairDouble.blockID, true)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab"));
 			Item.itemsList[Block.stairSingle.blockID] = null;
 			Item.itemsList[Block.stairSingle.blockID] = (new ItemSlabProxy(Block.stairSingle.blockID - 256)).setItemName("stoneSlab");	
 		}
