@@ -15,4 +15,5 @@ Only Require Risugami's Modloader
 - Pickaxe's are now effective on more block such as cobble stone stair , redstone ore and furnace
 - Axes's are now effective on more block such as oak stair , crafting table and fence
 - You can now place vanilla stairs upside down
+- You can now place vanilla slab upside down
 
