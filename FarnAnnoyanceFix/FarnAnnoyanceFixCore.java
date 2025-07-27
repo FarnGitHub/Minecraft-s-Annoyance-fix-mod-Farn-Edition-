@@ -104,7 +104,7 @@ public class FarnAnnoyanceFixCore {
 		}
 	}
 
-	private void addEffectiveTools(Item[] effectiveTools, Block[] vulnerableBlocks) {
+	public void addEffectiveTools(Item[] effectiveTools, Block[] vulnerableBlocks) {
 		try {
 			Field blocksEffectiveAgainstField = ItemTool.class.getDeclaredFields()[0];
 			blocksEffectiveAgainstField.setAccessible(true);
@@ -343,8 +343,7 @@ public class FarnAnnoyanceFixCore {
 			}
 		}
 		
-		int itemLocation = 
-this.getInventorySlotContainItem(itemID, itemDamage, player);
+		int itemLocation = this.getInventorySlotContainItem(itemID, itemDamage, player);
 		if (itemLocation == -1) {
 			return;
 		}
@@ -426,6 +425,24 @@ this.getInventorySlotContainItem(itemID, itemDamage, player);
 
 	public boolean isNormalEnvironment() {
 		return this.isNormalEnvironment; 	
+	}
+
+	public static void overrideVanillaItem(Item vanillaitem, Item itemoverriden) {
+		try {
+			for(int i2 = 0; i2 < Item.class.getDeclaredFields().length; ++i2) {
+				try {
+					if(((Item)Item.class.getDeclaredFields()[i2].get((Object)null)).equals(vanillaitem)) {
+						ModLoader.setPrivateValue(Item.class, (Object)null, i2, itemoverriden);
+						break;
+					}
+				} catch (Exception exception10) {
+				}
+			}
+
+			System.gc();
+		} catch (Exception exception11) {
+			throw new RuntimeException(exception11);
+		}
 	}
 
 	public static void overrideVanillaBlock(Block block0, Block block1) {
