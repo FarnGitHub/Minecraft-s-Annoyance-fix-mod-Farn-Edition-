@@ -28,9 +28,9 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 		ModLoader.SetInGameHook(this, true, false);
 
 		if(boatfix) {
-			FarnAnnoyanceFixCore.instance.overrideEntity("Boat", EntityBoat.class, 41, EntityBoatProxy.class);			
 			Item.itemsList[Item.boat.shiftedIndex] = null;
-			Item.itemsList[Item.boat.shiftedIndex] = (new ItemBoatProxy(Item.boat.shiftedIndex)).setIconCoord(8, 8).setItemName("boat");
+			FarnAnnoyanceFixCore.instance.overrideVanillaItem(Item.boat, (new ItemBoatProxy(Item.boat.shiftedIndex - 256)).setIconCoord(8, 8).setItemName("boat"));
+			FarnAnnoyanceFixCore.instance.overrideEntity("Boat", EntityBoat.class, 41, EntityBoatProxy.class);
 		}
 
 		if(fencefix) {
@@ -58,6 +58,7 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.stairSingle, (new BlockStepProxy(Block.stairSingle.blockID, false)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab"));
 			Block.blocksList[Block.stairDouble.blockID] = null;
 			ModLoader.RegisterBlock(upperStair  = (new BlockStepUpper(upperslabid)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab"));
+			FarnAnnoyanceFixCore.instance.addEffectiveTools(new Item[]{Item.pickaxeDiamond, Item.pickaxeGold, Item.pickaxeSteel, Item.pickaxeStone, Item.pickaxeWood}, new Block[]{upperStair});
 			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.stairDouble, (new BlockStepProxy(Block.stairDouble.blockID, true)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab"));
 			Item.itemsList[Block.stairSingle.blockID] = null;
 			Item.itemsList[Block.stairSingle.blockID] = (new ItemSlabProxy(Block.stairSingle.blockID - 256)).setItemName("stoneSlab");	
