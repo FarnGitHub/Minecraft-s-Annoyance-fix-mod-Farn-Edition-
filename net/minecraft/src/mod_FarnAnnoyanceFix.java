@@ -16,7 +16,7 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 	public static Item farnAnnoyanceFixBoat = null; 
 
 	public String Version() {
-		return "2.5 pre-4";
+		return "2.5.1";
 	}
 
 	public mod_FarnAnnoyanceFix() {
@@ -38,14 +38,16 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.fence, (new BlockFenceProxy(Block.fence.blockID, 4)).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setBlockName("fence").disableNeighborNotifyOnMetadataChange());
 		}
 
-		if(woodstairdrop) {
+		if(woodstairdrop || upperstair) {
 			Block.blocksList[Block.stairCompactPlanks.blockID] = null;
 			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.stairCompactPlanks, (new BlockStairsProxy(Block.stairCompactPlanks.blockID, Block.planks)).setBlockName("stairsWood").disableNeighborNotifyOnMetadataChange());
+			FarnAnnoyanceFixCore.instance.addEffectiveTools(new Item[]{Item.axeDiamond, Item.axeGold, Item.axeSteel, Item.axeStone, Item.axeWood}, new Block[]{Block.stairCompactPlanks});
 		}
 
-		if(stonestairdrop) {
+		if(stonestairdrop || upperstair) {
 			Block.blocksList[Block.stairCompactCobblestone.blockID] = null;
 			FarnAnnoyanceFixCore.overrideVanillaBlock(Block.stairCompactCobblestone, (new BlockStairsProxy(Block.stairCompactCobblestone.blockID, Block.cobblestone)).setBlockName("stairsStone").disableNeighborNotifyOnMetadataChange());
+			FarnAnnoyanceFixCore.instance.addEffectiveTools(new Item[]{Item.pickaxeDiamond, Item.pickaxeGold, Item.pickaxeSteel, Item.pickaxeStone, Item.pickaxeWood}, new Block[]{Block.stairCompactCobblestone});
 		}
 
 		if(nofarmlandtrampling) {
@@ -64,8 +66,6 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 			Item.itemsList[Block.stairSingle.blockID] = (new ItemSlabProxy(Block.stairSingle.blockID - 256)).setItemName("stoneSlab");	
 		}
 
-		config.setUpToolEffectiveList();
-
 		if(doubleslabsrecipe) {
 			config.removeRecipe(new ItemStack(Block.stairSingle, 3, 3), new Object[]{"###", '#', Block.cobblestone});
 			config.removeRecipe(new ItemStack(Block.stairSingle, 3, 0), new Object[]{"###", '#', Block.stone});
@@ -83,6 +83,8 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 			ModLoader.AddRecipe(new ItemStack(Block.stairCompactPlanks, 8), new Object[]{"#  ", "## ", "###", '#', Block.planks});
 			ModLoader.AddRecipe(new ItemStack(Block.stairCompactCobblestone, 8), new Object[]{"#  ", "## ", "###", '#', Block.cobblestone});
 		}
+
+		config.setUpToolEffectiveList();
 
 	}
 
@@ -133,6 +135,9 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 
 	@MLProp(name="No_FarmLand_trampling", info="Make farmland unable to get trampled by walking")
 	public static boolean nofarmlandtrampling = true;
+
+	@MLProp(name="Stair_Upper", info="Add Upper stair to the game")
+	public static boolean upperstair = true;
 
 	@MLProp(name="UpperSlab_BlockID", info="Block id for upper variant of slab")
 	public static int upperslabid = 200;
