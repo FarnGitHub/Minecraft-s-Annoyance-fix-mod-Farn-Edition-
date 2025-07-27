@@ -25,80 +25,92 @@ public class BlockStairsProxy extends BlockStairs {
 	}
 
 	public int getRenderType() {
-		return mod_FarnAnnoyanceFix.stairRender;
+		if(mod_FarnAnnoyanceFix.upperstair) {
+			return mod_FarnAnnoyanceFix.stairRender;
+		} else {
+			return super.getRenderType();
+		}
 	}
 
 	public void getCollidingBoundingBoxes(World world1, int i2, int i3, int i4, AxisAlignedBB axisAlignedBB5, ArrayList arrayList6) {
-		int i7 = world1.getBlockMetadata(i2, i3, i4);
-		if(i7 == 0) {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 0.5F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-		} else if(i7 == 1) {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-		} else if(i7 == 2) {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 0.5F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-		} else if(i7 == 3) {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 0.5F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-		} else if(i7 == 3) {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 0.5F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-		} else if(i7 == 4) {
-			this.setBlockBounds(0.0F, 0.5F, 0.0F, 0.5F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-		} else if(i7 == 5) {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-		} else if(i7 == 6) {
-			this.setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 0.5F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-		} else if(i7 == 7) {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
-			this.setBlockBounds(0.0F, 0.5F, 0.5F, 1.0F, 1.0F, 1.0F);
-			this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+		if(mod_FarnAnnoyanceFix.upperstair) {
+			int i7 = world1.getBlockMetadata(i2, i3, i4);
+			if(i7 == 0) {
+				this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 0.5F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			} else if(i7 == 1) {
+				this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			} else if(i7 == 2) {
+				this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 0.5F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			} else if(i7 == 3) {
+				this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 0.5F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			} else if(i7 == 3) {
+				this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 0.5F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			} else if(i7 == 4) {
+				this.setBlockBounds(0.0F, 0.5F, 0.0F, 0.5F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			} else if(i7 == 5) {
+				this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			} else if(i7 == 6) {
+				this.setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 0.5F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			} else if(i7 == 7) {
+				this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+				this.setBlockBounds(0.0F, 0.5F, 0.5F, 1.0F, 1.0F, 1.0F);
+				this.getCustomCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			}
+	
+			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		} else {
+			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		}
-
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	public void onBlockPlacedBy(World world1, int i2, int i3, int i4, EntityLiving entityLiving5) {
-		int i6 = MathHelper.floor_double((double)(entityLiving5.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		MovingObjectPosition mouse = ModLoader.getMinecraftInstance().objectMouseOver;
-		float var10 = (float)mouse.hitVec.yCoord - (float)i3;
+		if(mod_FarnAnnoyanceFix.upperstair) {
+			int i6 = MathHelper.floor_double((double)(entityLiving5.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+			MovingObjectPosition mouse = ModLoader.getMinecraftInstance().objectMouseOver;
+			float var10 = (float)mouse.hitVec.yCoord - (float)i3;
 
-		if(i6 == 0) {
-			world1.setBlockMetadataWithNotify(i2, i3, i4, this.getMetaDataFromHitVec(mouse.sideHit, var10, 2));
-		}
+			if(i6 == 0) {
+				world1.setBlockMetadataWithNotify(i2, i3, i4, this.getMetaDataFromHitVec(mouse.sideHit, var10, 2));
+			}
 
-		if(i6 == 1) {
-			world1.setBlockMetadataWithNotify(i2, i3, i4, this.getMetaDataFromHitVec(mouse.sideHit, var10, 1));
-		}
+			if(i6 == 1) {
+				world1.setBlockMetadataWithNotify(i2, i3, i4, this.getMetaDataFromHitVec(mouse.sideHit, var10, 1));
+			}
 
-		if(i6 == 2) {
-			world1.setBlockMetadataWithNotify(i2, i3, i4, this.getMetaDataFromHitVec(mouse.sideHit, var10, 3));
-		}
+			if(i6 == 2) {
+				world1.setBlockMetadataWithNotify(i2, i3, i4, this.getMetaDataFromHitVec(mouse.sideHit, var10, 3));
+			}
 
-		if(i6 == 3) {
-			world1.setBlockMetadataWithNotify(i2, i3, i4, this.getMetaDataFromHitVec(mouse.sideHit, var10, 0));
+			if(i6 == 3) {
+				world1.setBlockMetadataWithNotify(i2, i3, i4, this.getMetaDataFromHitVec(mouse.sideHit, var10, 0));
+			}
+		} else {
+			super.onBlockPlacedBy(world1, i2, i3, i4, entityLiving5);
 		}
 
 	}
