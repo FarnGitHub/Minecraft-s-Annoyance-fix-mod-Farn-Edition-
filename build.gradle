@@ -1,0 +1,93 @@
+plugins {
+    id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.4.2-SNAPSHOT'
+}
+
+group = project.property('group')
+version = project.property('version')
+base.archivesBaseName = project.property('modid')
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.wagyourtail.xyz/releases' }
+
+    ivy {
+        // We need this because the b1.7.3 forge dependency doesn't have metadata
+        url 'https://maven.wagyourtail.xyz/releases'
+
+        patternLayout {
+            artifact('[organisation]/[module]/[revision]/[module]-[revision]-[classifier].zip')
+            m2compatible = true
+        }
+        metadataSources {
+            artifact()
+        }
+    }
+}
+
+unimined {
+    useGlobalCache = false
+
+    minecraft {
+        version 'b1.7.3'
+        side 'client'
+
+        mappings {
+            retroMCP("b1.7")
+
+            stubs(['official', 'retroMCP']) {
+                def base = 'net/minecraft/src'
+                def mapClass = { name ->
+                    def path = "$base/$name"
+                    c(name, path, path)
+                }
+
+                c('mod_FarnAnnoyanceFix', 'net/minecraft/src/mod_FarnAnnoyanceFix', 'net/minecraft/src/mod_FarnAnnoyanceFix')
+
+                // Modloader
+                ['BaseMod', 'EntityRendererProxy', 'MLProp', 'ModLoader', 'ModTextureAnimation', 'ModTextureStatic'].each(mapClass)
+
+                // ModloaderMP
+                ['BaseModMp', 'ISpawnable', 'ModLoaderMp', 'NetClientHandlerEntity', 'Packet230ModLoader'].each(mapClass)
+
+                // Forge
+                ['ArmorProperties', 'BlockTextureParticles', 'Configuration', 'ForgeHooks', 'ForgeHooksClient', 'IArmorTextureProvider', 'IBlockSecondaryProperties', 'IBucketHandler', 'IConnectRedstone', 'ICraftingHandler', 'ICustomItemRenderer', 'IDestroyToolHandler', 'IHighlightHandler', 'IMultipassRender', 'IOverrideReplace', 'ISleepHandler', 'ISpecialArmor', 'ISpecialResistance', 'ITextureProvider', 'IUseItemFirst', 'MinecraftForge', 'MinecraftForgeClient', 'Property'].collect { "forge/$it" }.each(mapClass)
+            }
+        }
+
+        jarMod {
+            transforms "${modid}.transform"
+        }
+
+        runs {
+            config('client') {
+                jvmArgs '-Djma.debug=true'
+            }
+        }
+    }
+}
+
+dependencies {
+    jarMod 'risugami:modloader:b1.7.3'
+    jarMod 'modloadermp:modloadermp:b1.7.3:client'
+    jarMod 'net.minecraftforge:forge:b1.7.3-1.0.7:client'
+
+    // Any mods in the jarmods folder are automatically added as dependencies
+    jarMod fileTree(dir: 'jarmods', include: ['*.jar', '*.zip'])
+}
+
+jar {
+    from('LICENSE')
+
+    manifest {
+        attributes(
+                'JarModAgent-Transforms': "${modid}.transform",
+                'JarModAgent-Refmaps': "${modid}-refmap.json"
+        )
+    }
+}
