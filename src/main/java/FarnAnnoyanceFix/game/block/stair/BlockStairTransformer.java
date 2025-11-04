@@ -1,4 +1,4 @@
-package FarnAnnoyanceFix.game.block;
+package FarnAnnoyanceFix.game.block.stair;
 
 import FarnAnnoyanceFix.FarnAnnoyanceFixCore;
 import net.lenni0451.classtransform.InjectionCallback;
@@ -21,13 +21,6 @@ public abstract class BlockStairTransformer extends Block{
         if(mod_FarnAnnoyanceFix.stairdropthemselves) {
             this.dropBlockAsItem_do(world1, i2, i3, i4, new ItemStack(this.blockID, 1, 0));
             callback.setCancelled(true);
-        }
-    }
-
-    @CInject(method="getRenderType", target = @CTarget("HEAD"), cancellable = true)
-    public void annoyancefix_getCustomStairRender(InjectionCallback callback) {
-        if(mod_FarnAnnoyanceFix.upperstair) {
-            callback.setReturnValue(FarnAnnoyanceFixCore.stairRender);
         }
     }
 

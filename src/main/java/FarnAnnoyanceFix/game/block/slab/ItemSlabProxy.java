@@ -9,6 +9,9 @@ public class ItemSlabProxy extends ItemSlab {
 	public ItemSlabProxy(int var1) {
 		super(var1);
 		this.blocktype = var1 + 256;
+		if(var1 == FarnAnnoyanceFixCore.upperSlab.blockID) {
+			this.blocktype = Block.stairSingle.blockID + 256;
+		}
 	}
 
 	public String getItemNameIS(ItemStack itemStack1) {

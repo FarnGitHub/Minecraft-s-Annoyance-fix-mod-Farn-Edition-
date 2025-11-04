@@ -14,25 +14,15 @@ public class mod_FarnAnnoyanceFix extends BaseMod {
 	}
 
 	public void ModsLoaded() {
-		FarnAnnoyanceFixCore.stairRender = ModLoader.getUniqueBlockModelID(this, true);
+		//FarnAnnoyanceFixCore.stairRender = ModLoader.getUniqueBlockModelID(this, true);
 		ModLoader.SetInGameHook(this, true, false);
 		if(slabplacement) {
-			ModLoader.RegisterBlock(FarnAnnoyanceFixCore.upperSlab = (new BlockStepUpper(mod_FarnAnnoyanceFix.upperslabid)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab"));
+			ModLoader.RegisterBlock(FarnAnnoyanceFixCore.upperSlab = (new BlockStepUpper(mod_FarnAnnoyanceFix.upperslabid)).setHardness(2.0F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setBlockName("stoneSlab"), ItemSlabProxy.class);
 			FarnAnnoyanceFixCore.instance.addEffectiveTools(new Item[]{Item.pickaxeDiamond, Item.pickaxeGold, Item.pickaxeSteel, Item.pickaxeStone, Item.pickaxeWood}, new Block[]{FarnAnnoyanceFixCore.upperSlab});
 			Item.itemsList[Block.stairSingle.blockID] = null;
 			Item.itemsList[Block.stairSingle.blockID] = (new ItemSlabProxy(Block.stairSingle.blockID - 256)).setItemName("stoneSlab");
 		}
 		FarnAnnoyanceFixCore.instance.lateInit();
-	}
-
-	public void RenderInvBlock(RenderBlocks renderer, Block block, int metadata, int modelID) {
-		if(modelID == FarnAnnoyanceFixCore.stairRender) {
-			FarnAnnoyanceFixCore.instance.renderBlockStairInventory(renderer, block);
-		}
-	}
-
-	public boolean RenderWorldBlock(RenderBlocks renderer, IBlockAccess world, int x, int y, int z, Block block, int modelID) {
-		return modelID == FarnAnnoyanceFixCore.stairRender ? FarnAnnoyanceFixCore.instance.renderBlockStairsWithUpperVariant(renderer, block, x, y, z) : false;
 	}
 
 	public boolean OnTickInGame(Minecraft game) {

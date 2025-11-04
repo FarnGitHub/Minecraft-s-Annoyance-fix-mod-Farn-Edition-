@@ -1,6 +1,8 @@
 FarnAnnoyanceFix.game.entity.EntityBoatTransformer
 FarnAnnoyanceFix.game.block.BlockFarmLandTransformer
 FarnAnnoyanceFix.game.block.BlockFenceTransformer
-FarnAnnoyanceFix.game.block.BlockStairTransformer
+FarnAnnoyanceFix.game.block.stair.BlockStairTransformer
 FarnAnnoyanceFix.game.block.slab.BlockStepTransformer
 FarnAnnoyanceFix.game.WorldTransformer
+FarnAnnoyanceFix.game.block.stair.RenderBlockStairTransformer
+FarnAnnoyanceFix.game.entity.EntitySlimeTransformer

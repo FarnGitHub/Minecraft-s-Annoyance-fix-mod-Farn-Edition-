@@ -21,7 +21,6 @@ public class FarnAnnoyanceFixCore {
 	private static File configFile;
 	public static final FarnAnnoyanceFixCore instance = new FarnAnnoyanceFixCore();
 	private boolean isNormalEnvironment;
-	public static int stairRender;
 	public static Block upperSlab = null;
 
 	private FarnAnnoyanceFixCore() {
@@ -237,9 +236,9 @@ public class FarnAnnoyanceFixCore {
 		}
 	}
 
-	public boolean renderBlockStairsWithUpperVariant(RenderBlocks renderer, Block uu1, int i1, int j1, int k1) {
+	public boolean renderBlockStairsWithUpperVariant(RenderBlocks renderer, Block uu1, int i1, int j1, int k1, IBlockAccess acess) {
 		boolean flag = false;
-		int l1 = ModLoader.getMinecraftInstance().theWorld.getBlockMetadata(i1, j1, k1);
+		int l1 = acess.getBlockMetadata(i1, j1, k1);
 		if(l1 == 0) {
 			uu1.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 0.5F, 1.0F);
 			renderer.renderStandardBlock(uu1, i1, j1, k1);
